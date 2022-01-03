@@ -1,20 +1,14 @@
 const express = require('express');
 const path = require('path');
+const adminController = require('../controllers/admin');
 const mainDir = require('../util/path');
 const router = express.Router();
 
 const products = [];
 
-router.get('/add-product',(req, res, next) => {
-    console.log('In the middleware!');
-    res.render('add-product', {pageTitle:'Add Product', path: '/admin/add-product', formsCSS: true, productCSS: true, activeAddProduct: true});
-});
+router.get('/add-product', adminController.getAddProduct);
+router.get('/product', adminController.getProduct);
 
-router.post('/product', (req, res, next) => {
-    products.push({title:req.body.title});
-    console.log('test');
-    res.redirect('/');
-});
+router.post('/product', adminController.postProduct);
 
 exports.routes = router;
-exports.products = products;

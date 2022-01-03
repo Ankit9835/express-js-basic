@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const errorControllers = require('./controllers/pagenotfound');
 const bodyparser = require('body-parser');
 const expressHbs = require('express-handlebars');
 const adminRoutes = require('./routes/admin');
@@ -15,7 +16,7 @@ app.engine(
     extname: 'hbs'
   })
 );
-app.set('view engine', 'hbs');
+app.set('view engine', 'ejs');
 app.set('views', 'views');
 // app.set('view engine', 'pug');
 // app.set('views', 'views');
@@ -26,8 +27,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/admin',adminRoutes.routes);
 app.use(shopRoutes);
 
-app.use((req,res,send) => {
-    res.status(404).render('404', {pageTitle: '404 Page'});
-});
+app.use(errorControllers.PageNotFound);
 
 app.listen(3000);
