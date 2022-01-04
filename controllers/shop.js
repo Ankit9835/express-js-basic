@@ -20,11 +20,19 @@ exports.allProducts = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
     const prodId = req.params.productId;
-    console.log(prodId);
-    res.redirect('/');
+    Product.findById(prodId, product => {
+        res.render('shop/product-detail', {
+            product: product,
+            pageTitle: product.title,
+            path: '/products',
+        });
+    });
+    //res.redirect('/');
     //res.sendFile(path.join(mainDir, 'views', 'shop.html'));
    
 };
+
+
 
 exports.getIndex = (req,res,next) => {
     Product.fetchAll(products => {
@@ -44,6 +52,12 @@ exports.getCart = (req,res,next) => {
         pageTitle: 'Your Cart',
         path : '/cart',
     });
+};
+
+exports.postCart = (req,res,next) => {
+   const prodId = req.body.productId;
+   console.log(prodId);
+   res.redirect('/cart');
 };
 
 exports.getOrders = (req,res,next) => {
